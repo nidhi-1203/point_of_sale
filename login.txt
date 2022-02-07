@@ -1,0 +1,81 @@
+package pos_online;
+import javax.swing.*; 
+import java.awt.event.*;
+import java.io.*;
+import java.sql.*;
+
+public class login extends JFrame implements ActionListener {
+	
+	JLabel lb1,lb2;
+	JTextField tf1;
+	JPasswordField pf1;
+	JButton bt1;
+	
+	login()
+	{
+		setLayout (null);
+		lb1=new JLabel("username ");
+		lb2 = new JLabel("password ");
+		tf1=new JTextField();
+		pf1 =new JPasswordField();
+		bt1= new JButton("login ");
+		
+		lb1.setBounds(100, 100, 150, 30);
+		lb2.setBounds(100,150,150,30);
+		tf1.setBounds(250,100,150,30);
+		pf1.setBounds(250,150,150,30);
+		bt1.setBounds(250,200,150,30);
+		
+		add(tf1);
+		add(pf1);
+		add(lb1);
+		add(lb2);
+		add(bt1);
+		
+		bt1.addActionListener(this);
+		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setTitle("admin login ");
+		setSize(800,600);
+		setVisible(true);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		String username = tf1.getText().toString();
+        String password = pf1.getText().toString();
+        if (username.equals("") || password.equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields are required");
+
+        } else {
+           
+            try {
+                ResultSet rs = DBLoader.executeQuery("select * from admin where username='" + username + "' and password = '" + password + "'");
+
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(rootPane, "Success");
+                     admin_home obj = new admin_home(username);
+              
+//                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Fails");
+
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+	}
+
+	public static void main(String args[])
+	{
+		login obj = new login();
+	}
+
+	
+		
+	}
+	
+

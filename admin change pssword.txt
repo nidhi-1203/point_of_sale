@@ -1,0 +1,102 @@
+package pos_online;
+import javax.swing.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class admin_change_password extends JFrame implements ActionListener  {
+	JLabel lb1,lb2,lb3,lb4 ;
+	JTextField tf1;
+	JPasswordField pf1,pf2,pf3;
+	JButton bt1;
+	String username ="";
+	
+	admin_change_password(String username )
+	{
+		this.username=username;
+		setLayout(null);
+		
+		lb1=new JLabel("username ");
+		lb2=new JLabel("old password ");
+		lb3 = new JLabel("new password ");
+		lb4 = new JLabel("confirm password ");
+		tf1=new JTextField();
+		pf1=new JPasswordField();
+		pf2=new JPasswordField();
+		pf3=new JPasswordField();
+		bt1= new JButton("submit ");
+		
+		lb1.setBounds(100,100,150,30);
+		lb2.setBounds(100,150,150,30);
+		lb3.setBounds(100,200,150,30);
+		lb4.setBounds(90,250,150,30);
+		tf1.setBounds(200,100,150,30);
+		pf1.setBounds(200,150,150,30);
+		pf2.setBounds(200,200,150,30);
+		pf3.setBounds(200,250,150,30);
+		bt1.setBounds(200,300,150,30);
+		
+		add(lb1);
+		add(lb2);
+		add(lb3);
+		add(lb4);
+		add(tf1);
+		add(pf1);
+		add(pf2);
+		add(pf3);
+		add(bt1);
+		
+		bt1.addActionListener(this);
+		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setTitle("admin change password ");
+		setSize(800,600);
+		setVisible(true);
+	
+		tf1.setText(username);
+		tf1.setEnabled(false);
+		
+	
+	}
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		String username = tf1.getText().toString();
+		String old_password = pf1.getText().toString();
+		String new_password = pf2.getText().toString();
+		String confirm_password =pf3.getText().toString();
+		
+		if(username.equals("")|| old_password.equals("")|| new_password.equals("") || confirm_password.equals(""))
+		{
+			JOptionPane.showMessageDialog(rootPane, "All fileds are required ");
+		}
+		else if(new_password.equals(confirm_password))
+		{ try {
+	                ResultSet rs = DBLoader.executeQuery("select * from admin where username = '" + username + "' and password='" + old_password + "'");
+	                if (rs.next()) {
+	                    rs.moveToCurrentRow();
+	                    rs.updateString("password", new_password);
+	                    rs.updateRow();
+	                    JOptionPane.showMessageDialog(rootPane, "Success");
+	                } else {
+	                    JOptionPane.showMessageDialog(rootPane, "Old password didnt match with our database");
+
+	                }
+
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
+		}
+
+	        else 
+	        {
+	            JOptionPane.showMessageDialog(rootPane, "New password and confirm password must match");
+
+	        }
+	}
+	
+	public static void main(String args[])
+	{
+      
+	}
+
+}

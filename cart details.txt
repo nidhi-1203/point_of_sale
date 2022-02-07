@@ -1,0 +1,14 @@
+package pos_online;
+
+public class cart_details {int pid, qty, price;
+String name,photo;
+
+public cart_details(int pid, int qty, int price, String name, String photo) {
+    this.pid = pid;
+    this.qty = qty;
+    this.price = price;
+    this.name = name;
+    this.photo = photo;
+}
+
+}
